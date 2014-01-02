@@ -1,0 +1,86 @@
+#include <iostream>
+#include <iomanip>
+
+using namespace std;
+
+int array[101];//we only care about the first 100 elements(so elements from index 0 to index 99).
+void init_array();
+void search_function();
+void swap(int *, int *);
+
+
+//use this implementation of init_array if you want to test the code using random numbers.
+
+/*void init_array()
+{
+    for(int i = 0; i <= 100; ++i)
+    {
+    int counter = rand() % 100 + 1;//we do not care about the element at index 100.
+    array[i] = counter;
+    cout<<array[i]<<endl;
+    }
+}*/
+
+
+void init_array()
+{
+    cout<<"This is the original array"<<endl;
+    for(int i = 0; i <= 100; ++i)
+    {
+        array[i] = i;
+        cout<<array[i]<<endl;
+    }
+}
+
+void search_function()
+{
+    int searchkey;
+    cout<<"Please enter a searchkey"<<endl;
+    cin>>searchkey;
+    array[100] = searchkey;
+
+    int i = 0;
+    while(array[i]!=searchkey)
+    {
+        i++;
+    }
+    cout<<"The searchkey is at index "<<i<<endl;
+
+    if(i!=100 && i!=0)
+    {
+    swap(&array[i],&array[i-1]);//need to pass by reference as c++ enables info hiding between functions.
+    }
+}
+
+void swap(int *xptr, int *yptr)
+{
+    int temp = *xptr;
+    *xptr = *yptr;
+    *yptr = temp;
+}
+
+void keepsearching()
+{
+    int signal = 0;
+    while(signal!=-1)
+    {
+        search_function();
+        cout<<"Enter -1 to stop searching for elements and display the array; or else enter any other number to keep searching"<<endl;
+        cin>>signal;
+    }
+}
+void displayarray()
+{
+    for (int a = 0;a<=100;a++)
+    {
+        cout<<array[a]<<endl;
+    }
+}
+
+int main()
+{
+    init_array();
+    keepsearching();
+    displayarray();
+    return 0;
+}
