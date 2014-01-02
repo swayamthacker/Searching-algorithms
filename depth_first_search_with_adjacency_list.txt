@@ -1,0 +1,326 @@
+#include <iostream>
+using namespace std;
+const int size = 9;
+
+struct nodex
+{
+int x;
+nodex* nextptr;
+};
+
+class Stack
+{
+private:
+nodex* head;
+nodex* tail;
+public:
+Stack();
+~Stack();
+void push(int);
+int pop();
+bool isempty();
+void display();
+};
+
+Stack::Stack()
+{
+head = NULL;
+tail = NULL;
+}
+
+Stack::~Stack()
+{
+delete head;
+//delete tail;
+}
+
+void Stack::push(int element)
+{
+nodex* pointer;
+pointer = new nodex;
+pointer->x = element;
+
+if(head==NULL)
+{
+head = pointer;
+tail = pointer;
+tail->nextptr = 0;
+}
+else
+{
+tail->nextptr = pointer;
+tail = pointer;
+tail->nextptr = 0;
+}
+}
+
+int Stack::pop()
+{
+int value = 0;
+if(head==NULL)
+{
+cout<<"The stack is empty"<<endl;
+return value;
+}
+else
+{
+nodex* temp = head;
+nodex* store = head;
+
+while(temp!=tail)
+{
+temp = temp->nextptr; //temp = tail
+}
+while(store->nextptr!=tail && store!=tail)
+{
+ store = store->nextptr; //the new tail to be
+}
+value = temp->x;
+if(head==tail)
+{
+ delete temp;
+ head = NULL;
+ tail = NULL;
+}
+else
+{
+tail = store;
+tail->nextptr = 0;
+delete temp;
+}
+}
+return value;
+}
+
+bool Stack::isempty()
+{
+return (head==NULL);
+}
+
+void Stack::display()
+{
+if(head==NULL)
+{
+cout<<"The stack is empty"<<endl;
+}
+else
+{
+nodex* traverse = head;
+while(traverse!=NULL)
+{
+cout<<traverse->x<<" "<<endl;
+traverse = traverse->nextptr;
+}
+}
+}
+
+
+struct node{
+int x;
+node* nextptr;
+};
+
+class Graph
+{
+private:
+node** table;
+//node* tail;
+public:
+Graph();
+~Graph();
+void initialize();
+void addvertex(int,int);
+void display(int);
+void dfs(int);
+};
+
+Graph::Graph()
+{
+//head = NULL;
+table = new node*[size];
+for(int i=0;i<size;i++)
+{
+table[i] = 0;
+//table[i]->nextptr = 0;
+}//tail = NULL;
+}
+
+Graph::~Graph()
+{
+for(int i = 0;i<size;i++)
+{
+if(table[i]!=NULL)
+{
+node* preventry = 0;
+node* entry = table[i];
+while(entry!=NULL)
+{
+preventry = entry;
+entry = entry->nextptr;
+delete preventry;
+}
+}
+}
+delete [] table;
+}
+
+void Graph::initialize()
+{
+/*for(int i =0;i<size;i++)
+{
+table[i]->x = i;
+}*/
+cout<<" iget here"<<endl;
+for(int i =0;i<size;i++) //can go from i =1 to i =size;just to display the list, go from 0 to size
+{
+table[i] = new node;
+table[i]->x = i;
+table[i]->nextptr = 0;
+}
+cout<<"I get here"<<endl;
+}
+
+void Graph::addvertex(int location,int vertex)
+{
+node* pointer;
+node* currentptr;
+//int name;
+//for(int i = 0;i<vertex;i++)
+//{
+//cout<<"Please enter the next vertex"<<endl;
+//cin>>name;
+//if(table[location]==NULL)
+//{
+pointer = new node;
+pointer->x = vertex;
+//otherwise its pointer->x = name
+cout<<"The pointer value is "<<pointer->x<<endl;
+node* head = table[location];
+//head->nextptr = 0;
+currentptr = head;
+while(currentptr->nextptr!=NULL)
+{
+currentptr = currentptr->nextptr;
+}
+currentptr->nextptr = pointer;
+currentptr = pointer;
+currentptr->nextptr = 0;
+cout<<"reaching the end"<<endl;
+}
+
+void Graph:: display(int location)
+{
+node* traverseptr = table[location];
+while(traverseptr->nextptr!=NULL)
+{
+cout<<traverseptr->x<<" ";
+traverseptr = traverseptr->nextptr;
+}
+cout<<traverseptr->x<<endl;
+}
+
+void Graph:: dfs(int target)
+{
+//cout<<"in dfs"<<endl;
+Stack S;
+bool *visited;
+visited = new bool[size];
+
+for(int i = 0;i<size;i++)
+{
+visited[i] = false;
+}
+
+node* storeptr = table[1];
+int s = storeptr->x;
+S.push(s);
+if(s == target)
+{
+cout<<"Found the target"<<endl;
+return;
+}
+visited[s] = true;
+cout << "DFS from vertex "<<s<<" :"<<endl;
+cout<<s<<" ";
+while(!S.isempty())
+{
+int m = S.pop();
+/*if(!visited[m])
+{
+
+ cout<<m<<" ";
+}*/
+
+S.push(m);
+if(m == target)
+{
+cout<<endl<<"Reached target "<<m<<endl;
+return;
+}
+//cout<< " i get here"<<endl;
+node* traverseptr = table[m];
+
+
+if(traverseptr->nextptr!=0)
+{
+
+traverseptr = traverseptr->nextptr;
+
+
+while(visited[traverseptr->x]==true&&traverseptr->nextptr!=0)//if i have been there before
+{
+ traverseptr = traverseptr->nextptr;
+}
+int j = traverseptr->x;
+if(!visited[j])
+{
+S.push(j);
+visited[j] = true;
+cout<<j<<" ";
+}
+else
+{
+ S.pop();
+}
+}
+}
+}
+
+int main()
+{
+Graph g;
+g.initialize();
+g.addvertex(1, 2);
+g.addvertex(1, 3);
+g.addvertex(1, 4);
+g.addvertex(2,1);
+g.addvertex(2, 5);
+g.addvertex(2, 6);
+g.addvertex(3,1);
+g.addvertex(4,1);
+g.addvertex(4, 7);
+g.addvertex(4,8);
+g.addvertex(5,2);
+g.addvertex(6,2);
+g.addvertex(7,4);
+g.addvertex(8,4);
+
+//if you want to include the below 4 statements, simply uncomment them and make the size at the top equal to 11
+/*
+g.addvertex(5,9);
+g.addvertex(9,5);
+g.addvertex(5,10);
+g.addvertex(10,5);
+*/
+
+cout<<endl<<endl;
+
+for(int i =0;i<size;i++)
+{
+g.display(i);
+}
+cout<<endl<<endl;
+g.dfs(15);
+
+return 0;
+}

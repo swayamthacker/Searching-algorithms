@@ -1,0 +1,218 @@
+#include <iostream>
+
+using namespace std;
+
+struct node
+{
+int x;
+node* nextptr;
+};
+
+class Queue
+{
+private:
+node* head;
+node* tail;
+
+public:
+Queue();
+~Queue();
+void enqueue(int);
+int dequeue();
+bool isempty();
+void display();
+};
+
+Queue::Queue()
+{
+head = NULL;
+tail = NULL;
+}
+
+Queue::~Queue()
+{
+delete head;
+//delete tail;
+}
+
+void Queue::enqueue(int element)
+{
+node* pointer;
+pointer = new node;
+pointer->x = element;
+
+if(head==NULL)
+{
+head = pointer;
+tail = pointer;
+tail->nextptr = 0;
+}
+else
+{
+tail->nextptr = pointer;
+tail = pointer;
+tail->nextptr = 0;
+}
+}
+
+int Queue::dequeue()
+{
+int value = 0;
+if(head==NULL)
+{
+cout<<"The queue is empty"<<endl;
+return value;
+}
+else
+{
+node* temp = head;
+value = temp->x;
+head = head->nextptr;
+delete temp;
+}
+
+return value;
+}
+
+bool Queue::isempty()
+{
+return (head==NULL);
+}
+
+void Queue::display()
+{
+if(head==NULL)
+{
+cout<<"The queue is empty"<<endl;
+}
+else
+{
+node* traverse = head;
+while(traverse!=NULL)
+{
+cout<<traverse->x<<" "<<endl;
+traverse = traverse->nextptr;
+}
+}
+}
+
+
+class Graph
+{
+private:
+int n;//number of vertices
+int **A;
+
+public:
+Graph(int size = 2);
+~Graph();
+bool isconnected(int,int);
+void addedge(int,int);
+void bfs(int,int);
+};
+
+Graph::Graph(int size)
+{
+if(size<2)
+{
+n = 2;
+}
+else
+{
+n = size;
+}
+A = new int*[n]; //array of integer pointers
+for(int i =0;i<n;i++) //each pointer in the array refers to an array of integers
+{
+A[i] = new int[n];
+}
+for(int i = 0;i<n;i++)
+{
+for(int j =0;j<n;j++)
+{
+A[i][j] = 0;
+}
+}
+}
+
+Graph::~Graph()
+{
+for(int i =0;i<n;i++)
+{
+delete [] A[i];
+}
+delete [] A;
+}
+
+bool Graph::isconnected(int u,int v)
+{
+    return (A[u-1][v-1]==1);
+}
+
+void Graph::addedge(int u,int v)
+{
+    A[u-1][v-1] = 1;
+    A[v-1][u-1] = 1;
+}
+
+void Graph::bfs(int x,int target)
+{
+    Queue Q;
+    bool *visited;
+    visited = new bool[n+1];
+
+    for(int i = 1;i<=n;i++)
+    {
+        visited[i] = false;
+    }
+    Q.enqueue(x);
+    if(x==target)
+    {
+       return;
+    }
+    visited[x] = true;
+    cout << "BFS from vertex "<<x<<" :"<<endl;
+    while(!Q.isempty())
+    {
+        int m = Q.dequeue();
+
+        cout<<m<<" ";
+
+        if(m==target)
+        {
+            cout<<endl<<"Reached target "<<m<<endl;
+            return;
+        }
+
+
+        //From the explored vertex m try to explore all the
+        //connected vertices w
+        for(int w = 1;w<=n;w++)
+        {
+            //explore w if it is connected to m and if it has not been visited
+            if(isconnected(m,w) && !visited[w])
+            {
+                Q.enqueue(w);
+                visited[w] = true;
+            }
+        }
+    }
+    delete [] visited;
+}
+
+
+int main()
+{
+    Graph g(12);
+
+    g.addedge(1, 2);
+    g.addedge(1, 3);
+    g.addedge(2, 4);
+    g.addedge(3, 4);
+    g.addedge(3, 6);
+    g.addedge(4 ,7);
+    g.addedge(5, 6);
+    g.addedge(5, 7);
+
+    g.bfs(1,15);
+}

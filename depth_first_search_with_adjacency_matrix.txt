@@ -1,0 +1,238 @@
+#include <iostream>
+using namespace std;
+//const int size = 8;
+
+struct nodex
+{
+int x;
+nodex* nextptr;
+};
+
+class Stack
+{
+private:
+nodex* head;
+nodex* tail;
+public:
+Stack();
+~Stack();
+void push(int);
+int pop();
+bool isempty();
+void display();
+};
+
+Stack::Stack()
+{
+head = NULL;
+tail = NULL;
+}
+
+Stack::~Stack()
+{
+delete head;
+//delete tail;
+}
+
+void Stack::push(int element)
+{
+nodex* pointer;
+pointer = new nodex;
+pointer->x = element;
+
+if(head==NULL)
+{
+head = pointer;
+tail = pointer;
+tail->nextptr = 0;
+}
+else
+{
+tail->nextptr = pointer;
+tail = pointer;
+tail->nextptr = 0;
+}
+}
+
+int Stack::pop()
+{
+int value = 0;
+if(head==NULL)
+{
+cout<<"The stack is empty"<<endl;
+return value;
+}
+else
+{
+nodex* temp = head;
+nodex* store = head;
+
+while(temp!=tail)
+{
+temp = temp->nextptr; //temp = tail
+}
+while(store->nextptr!=tail && store!=tail)
+{
+ store = store->nextptr; //the new tail to be
+}
+value = temp->x;
+if(head==tail)
+{
+ delete temp;
+ head = NULL;
+ tail = NULL;
+}
+else
+{
+tail = store;
+tail->nextptr = 0;
+delete temp;
+}
+}
+return value;
+}
+
+bool Stack::isempty()
+{
+return (head==NULL);
+}
+
+void Stack::display()
+{
+if(head==NULL)
+{
+cout<<"The stack is empty"<<endl;
+}
+else
+{
+nodex* traverse = head;
+while(traverse!=NULL)
+{
+cout<<traverse->x<<" "<<endl;
+traverse = traverse->nextptr;
+}
+}
+}
+
+class Graph
+{
+private:
+int n;//number of vertices
+int **A;
+
+public:
+Graph(int size = 2);
+~Graph();
+bool isconnected(int,int);
+void addedge(int,int);
+void dfs(int,int);
+};
+
+Graph::Graph(int size)
+{
+if(size<2)
+{
+n = 2;
+}
+else
+{
+n = size;
+}
+A = new int*[n]; //array of integer pointers
+for(int i =0;i<n;i++) //each pointer in the array refers to an array of integers
+{
+A[i] = new int[n];
+}
+for(int i = 0;i<n;i++)
+{
+for(int j =0;j<n;j++)
+{
+A[i][j] = 0;
+}
+}
+}
+
+Graph::~Graph()
+{
+for(int i =0;i<n;i++)
+{
+delete [] A[i];
+}
+delete [] A;
+}
+
+bool Graph::isconnected(int u,int v)
+{
+ return (A[u-1][v-1]==1);
+}
+
+void Graph::addedge(int u,int v)
+{
+ A[u-1][v-1] = 1;
+ A[v-1][u-1] = 1;
+}
+
+void Graph::dfs(int s,int target)
+{
+//cout<<"in dfs"<<endl;
+Stack S;
+bool *visited;
+visited = new bool[n+1];
+
+for(int i = 1;i<=n;i++)
+{
+visited[i] = false;
+}
+S.push(s);
+visited[s] = true;
+if(s == target)
+{
+cout<<"Found the target"<<endl;
+return;
+}
+cout << "DFS from vertex "<<s<<" :"<<endl;
+while(!S.isempty())
+{
+ int m = S.pop();
+ cout<<m<<" ";
+ if(m == target)
+ {
+ cout<<endl<<"Reached target "<<m<<endl;
+ return;
+ }
+ for(int x = n;x>0;x--)
+ {
+
+if(isconnected(m,x) && !visited[x])
+ {
+ S.push(x);
+ visited[x] = true;
+ }
+ }
+
+ /*if(m==5)
+ {
+ cout<<endl<<"displaying stack"<<endl;
+ S.display();
+ cout<<endl<<"End of stack display";
+ }*/
+
+}
+delete [] visited;
+}
+
+int main()
+{
+ Graph g(8);
+ g.addedge(1, 2);
+ g.addedge(1, 3);
+ g.addedge(1, 4);
+ g.addedge(2, 5);
+ g.addedge(2, 6);
+ g.addedge(4, 7);
+ g.addedge(4, 8);
+
+ g.dfs(1, 15);
+
+ return 0;
+}
