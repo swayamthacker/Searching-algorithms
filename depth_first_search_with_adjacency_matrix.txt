@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-//const int size = 8;
+
 
 struct nodex
 {
@@ -31,7 +31,6 @@ tail = NULL;
 Stack::~Stack()
 {
 delete head;
-//delete tail;
 }
 
 void Stack::push(int element)
@@ -69,7 +68,7 @@ nodex* store = head;
 
 while(temp!=tail)
 {
-temp = temp->nextptr; //temp = tail
+temp = temp->nextptr; 
 }
 while(store->nextptr!=tail && store!=tail)
 {
@@ -174,7 +173,6 @@ void Graph::addedge(int u,int v)
 
 void Graph::dfs(int s,int target)
 {
-//cout<<"in dfs"<<endl;
 Stack S;
 bool *visited;
 visited = new bool[n+1];
@@ -209,13 +207,6 @@ if(isconnected(m,x) && !visited[x])
  visited[x] = true;
  }
  }
-
- /*if(m==5)
- {
- cout<<endl<<"displaying stack"<<endl;
- S.display();
- cout<<endl<<"End of stack display";
- }*/
 
 }
 delete [] visited;
