@@ -31,7 +31,6 @@ tail = NULL;
 Stack::~Stack()
 {
 delete head;
-//delete tail;
 }
 
 void Stack::push(int element)
@@ -136,13 +135,11 @@ void dfs(int);
 
 Graph::Graph()
 {
-//head = NULL;
 table = new node*[size];
 for(int i=0;i<size;i++)
 {
 table[i] = 0;
-//table[i]->nextptr = 0;
-}//tail = NULL;
+}
 }
 
 Graph::~Graph()
@@ -166,37 +163,22 @@ delete [] table;
 
 void Graph::initialize()
 {
-/*for(int i =0;i<size;i++)
-{
-table[i]->x = i;
-}*/
-cout<<" iget here"<<endl;
 for(int i =0;i<size;i++) //can go from i =1 to i =size;just to display the list, go from 0 to size
 {
 table[i] = new node;
 table[i]->x = i;
 table[i]->nextptr = 0;
 }
-cout<<"I get here"<<endl;
 }
 
 void Graph::addvertex(int location,int vertex)
 {
 node* pointer;
 node* currentptr;
-//int name;
-//for(int i = 0;i<vertex;i++)
-//{
-//cout<<"Please enter the next vertex"<<endl;
-//cin>>name;
-//if(table[location]==NULL)
-//{
 pointer = new node;
 pointer->x = vertex;
-//otherwise its pointer->x = name
-cout<<"The pointer value is "<<pointer->x<<endl;
+
 node* head = table[location];
-//head->nextptr = 0;
 currentptr = head;
 while(currentptr->nextptr!=NULL)
 {
@@ -205,7 +187,6 @@ currentptr = currentptr->nextptr;
 currentptr->nextptr = pointer;
 currentptr = pointer;
 currentptr->nextptr = 0;
-cout<<"reaching the end"<<endl;
 }
 
 void Graph:: display(int location)
@@ -221,7 +202,6 @@ cout<<traverseptr->x<<endl;
 
 void Graph:: dfs(int target)
 {
-//cout<<"in dfs"<<endl;
 Stack S;
 bool *visited;
 visited = new bool[size];
@@ -245,11 +225,6 @@ cout<<s<<" ";
 while(!S.isempty())
 {
 int m = S.pop();
-/*if(!visited[m])
-{
-
- cout<<m<<" ";
-}*/
 
 S.push(m);
 if(m == target)
@@ -257,7 +232,6 @@ if(m == target)
 cout<<endl<<"Reached target "<<m<<endl;
 return;
 }
-//cout<< " i get here"<<endl;
 node* traverseptr = table[m];
 
 
