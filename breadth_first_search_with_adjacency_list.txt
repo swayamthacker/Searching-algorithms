@@ -103,7 +103,7 @@ class Graph
 {
 private:
 node** table;
-//node* tail;
+
 public:
 Graph();
 ~Graph();
@@ -158,20 +158,13 @@ void Graph::addvertex(int location,int vertex)
 {
 node* pointer;
 node* currentptr;
-//int name;
-//for(int i = 0;i<vertex;i++)
-//{
-//cout<<"Please enter the next vertex"<<endl;
-//cin>>name;
-//if(table[location]==NULL)
-//{
+
 pointer  = new node;
 pointer->x = vertex;
-//otherwise its pointer->x = name
-cout<<"The pointer value is "<<pointer->x<<endl;
+
 node* head = table[location];
-//head->nextptr = 0;
 currentptr = head;
+
 while(currentptr->nextptr!=NULL)
 {
     currentptr = currentptr->nextptr;
@@ -179,7 +172,6 @@ while(currentptr->nextptr!=NULL)
 currentptr->nextptr = pointer;
 currentptr = pointer;
 currentptr->nextptr = 0;
-cout<<"reaching the end"<<endl;
 }
 
 void Graph:: display(int location)
@@ -206,24 +198,24 @@ void Graph:: bfs(int target)
 
     node* storeptr = table[1];
     int s = storeptr->x;
-    Q.enqueue(s);
     if(s == target)
     {
-        cout<<"Found the target"<<endl;
+        cout<<"Found the target "<<s<<endl;
         return;
     }
+    Q.enqueue(s);
     visited[s] = true;
     cout << "BFS from vertex "<<s<<" :"<<endl;
-     while(!Q.isempty())
-     {
-         int m = Q.dequeue();
+    while(!Q.isempty())
+    {
+        int m = Q.dequeue();
         cout<<m<<" ";
         if(m == target)
         {
             cout<<endl<<"Reached target "<<m<<endl;
             return;
         }
-        //cout<< " i get here"<<endl;
+        
         node* traverseptr = table[m];
 
         while(traverseptr->nextptr!=0)
