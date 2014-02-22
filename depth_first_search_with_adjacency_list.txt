@@ -4,8 +4,8 @@ const int size = 9;
 
 struct nodex
 {
-int x;
-nodex* nextptr;
+ int x;
+ nodex* nextptr;
 };
 
 class Stack
@@ -24,71 +24,71 @@ void display();
 
 Stack::Stack()
 {
-head = NULL;
-tail = NULL;
+ head = NULL;
+ tail = NULL;
 }
 
 Stack::~Stack()
 {
-delete head;
+ delete head;
 }
 
 void Stack::push(int element)
 {
-nodex* pointer;
-pointer = new nodex;
-pointer->x = element;
+ nodex* pointer;
+ pointer = new nodex;
+ pointer->x = element;
 
-if(head==NULL)
-{
-head = pointer;
-tail = pointer;
-tail->nextptr = 0;
-}
-else
-{
-tail->nextptr = pointer;
-tail = pointer;
-tail->nextptr = 0;
-}
+ if(head==NULL)
+ {
+  head = pointer;
+  tail = pointer;
+  tail->nextptr = 0;
+ }
+ else
+ {
+  tail->nextptr = pointer;
+  tail = pointer;
+  tail->nextptr = 0;
+ }
 }
 
 int Stack::pop()
 {
-int value = 0;
-if(head==NULL)
-{
-cout<<"The stack is empty"<<endl;
-return value;
-}
-else
-{
-nodex* temp = head;
-nodex* store = head;
-
-while(temp!=tail)
-{
-temp = temp->nextptr; //temp = tail
-}
-while(store->nextptr!=tail && store!=tail)
-{
- store = store->nextptr; //the new tail to be
-}
-value = temp->x;
-if(head==tail)
-{
+ int value = 0;
+ if(head==NULL)
+ {
+ cout<<"The stack is empty"<<endl;
+ return value;
+ }
+ else
+ {
+ nodex* temp = head;
+ nodex* store = head;
+ 
+ while(temp!=tail)
+ {
+ temp = temp->nextptr; //temp = tail
+ }
+ while(store->nextptr!=tail && store!=tail)
+ {
+  store = store->nextptr; //the new tail to be
+ }
+ value = temp->x;
+ if(head==tail)
+ {
+  delete temp;
+  head = NULL;
+  tail = NULL;
+ }
+ else
+ {
+ tail = store;
+ tail->nextptr = 0;
  delete temp;
- head = NULL;
- tail = NULL;
-}
-else
-{
-tail = store;
-tail->nextptr = 0;
-delete temp;
-}
-}
-return value;
+ }
+ }
+ return value;
 }
 
 bool Stack::isempty()
@@ -222,42 +222,42 @@ return;
 visited[s] = true;
 cout << "DFS from vertex "<<s<<" :"<<endl;
 cout<<s<<" ";
-while(!S.isempty())
-{
-int m = S.pop();
-
-S.push(m);
-if(m == target)
-{
-cout<<endl<<"Reached target "<<m<<endl;
-return;
-}
-node* traverseptr = table[m];
-
-
-if(traverseptr->nextptr!=0)
-{
-
-traverseptr = traverseptr->nextptr;
-
-
-while(visited[traverseptr->x]==true&&traverseptr->nextptr!=0)//if i have been there before
-{
- traverseptr = traverseptr->nextptr;
-}
-int j = traverseptr->x;
-if(!visited[j])
-{
-S.push(j);
-visited[j] = true;
-cout<<j<<" ";
-}
-else
-{
- S.pop();
-}
-}
-}
+ while(!S.isempty())
+ {
+  int m = S.pop();
+ 
+  S.push(m);
+  if(m == target)
+  {
+   cout<<endl<<"Reached target "<<m<<endl;
+   return;
+  }
+  node* traverseptr = table[m];
+ 
+ 
+  if(traverseptr->nextptr!=0)
+  {
+ 
+   traverseptr = traverseptr->nextptr;
+ 
+ 
+   while(visited[traverseptr->x]==true&&traverseptr->nextptr!=0)//if i have been there before
+   {
+    traverseptr = traverseptr->nextptr;
+   }
+   int j = traverseptr->x;
+   if(!visited[j])
+   {
+    S.push(j);
+    visited[j] = true;
+    cout<<j<<" ";
+   }
+   else
+   {
+    S.pop();
+   }
+  }
+ }
 }
 
 int main()
