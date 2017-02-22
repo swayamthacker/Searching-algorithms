@@ -131,6 +131,7 @@ void initialize();
 void addvertex(int,int);
 void display(int);
 void dfs(int);
+void dfs2(int);//alternate way to do dfs
 };
 
 Graph::Graph()
