@@ -260,6 +260,52 @@ cout<<s<<" ";
  }
 }
 
+void Graph:: dfs2(int target)
+{
+ Stack S;
+ bool *visited;
+ visited = new bool[size];
+ for(int i = 0;i<size;i++){
+  visited[i] = false;
+  }
+ node* storeptr = table[1];
+ int s = storeptr->x;
+ S.push(s);
+ if(s == target){
+ cout<<"Found the target"<<endl;
+ return;
+ }
+ visited[s] = true;
+ cout << "DFS from vertex "<<s<<" :"<<endl;
+ cout<<s<<" "; 
+ while(!S.isempty()) 
+ {  
+ int m = S.pop();  
+ S.push(m);  
+ if(m == target)  {   
+ cout<<endl<<"Reached target "<<m<<endl;   
+ return;  
+ }  
+ node* traverseptr = table[m];  
+ while(traverseptr->nextptr != nullptr)  
+ {      
+  traverseptr = traverseptr->nextptr;      
+  if(!visited[traverseptr->x])      
+  {          
+   S.push(traverseptr->x);          
+   visited[traverseptr->x] = true;          
+   break;      
+  }      
+  if(traverseptr->nextptr == nullptr)      
+  {          
+    int temp = S.pop();          
+    cout<<"Popped "<<temp<<endl;      
+  }  
+  } 
+  }
+  }
+
+
 int main()
 {
 Graph g;
